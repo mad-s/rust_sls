@@ -1,0 +1,16 @@
+[package]
+name = "rust_sls"
+version = "0.1.0"
+authors = ["Matteo Signer <matteo.signer@gmail.com>"]
+edition = "2018"
+
+build = "build.rs"
+
+[dependencies]
+cpp = "0.4"
+
+[build-dependencies]
+cpp_build = "0.4"
+pkg-config = "*"
+cmake = "*"
+
