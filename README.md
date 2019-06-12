@@ -8,8 +8,8 @@ let target = vec![0.1f64, 0.2, 0.3, 0.4, 0.5];
 let dims = target.len();
 let mut sls = SLSFramework::new(dims);
 for it in 0..10 {
-    let a = sls.getParametersFromSlider(0.);
-    let b = sls.getParametersFromSlider(1.);
+    let a = sls.get_parameters_from_slider(0.);
+    let b = sls.get_parameters_from_slider(1.);
 
     // Get closest point to `target` along slider
 
@@ -22,9 +22,9 @@ for it in 0..10 {
     let x = proj / pl;
     let x = x.max(0.).min(1.);
 
-    sls.proceedOptimization(x);
+    sls.proceed_optimization(x);
 }
-println!("target: {:?}\nresult: {:?}", target, sls.getXmax());
+println!("target: {:?}\nresult: {:?}", target, sls.get_x_max());
 ```
 
 

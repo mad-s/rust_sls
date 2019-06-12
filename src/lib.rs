@@ -1,4 +1,9 @@
-//! See the [SLSFramework] type for usage info.
+//! Rust Bindings for [Sequential Line Search](https://koyama.xyz/project/sequential_line_search/).
+//!
+//! Sequential Line Search is a generic human-in-the-loop optimization algorithm that optimizes for
+//! the user's preference, by repeatedly asking them to select their favorite on a slider.
+//!
+//! The [SLSFramework] type holds the state of the algorithm, look there for the available methods.
 //!
 //! # Example:
 //! ```
@@ -6,8 +11,8 @@
 //! let dims = target.len();
 //! let mut sls = SLSFramework::new(dims);
 //! for it in 0..10 {
-//!     let a = sls.getParametersFromSlider(0.);
-//!     let b = sls.getParametersFromSlider(1.);
+//!     let a = sls.get_parameters_from_slider(0.);
+//!     let b = sls.get_parameters_from_slider(1.);
 //!
 //!     // Get closest point to `target` along slider
 //!
@@ -20,9 +25,9 @@
 //!     let x = proj / pl;
 //!     let x = x.max(0.).min(1.);
 //!
-//!     sls.proceedOptimization(x);
+//!     sls.proceed_optimization(x);
 //! }
-//! println!("target: {:?}\nresult: {:?}", target, sls.getXmax());
+//! println!("target: {:?}\nresult: {:?}", target, sls.get_x_max());
 //! ```
 
 #![recursion_limit="512"]
@@ -122,7 +127,7 @@ unsafe fn as_rust_vec(ev: *const u8) -> Vec<f64> {
             ptr[i] = (*ev)(i);
         }
     });
-    return res
+    res
 }
 
 impl SLSFramework {
@@ -140,7 +145,7 @@ impl SLSFramework {
     /// Take one step in the algorithm.
     ///
     /// `pos` (`0 <= pos <= 1`) is the best position along the current slider
-    pub fn proceedOptimization(&mut self, pos: f64) {
+    pub fn proceed_optimization(&mut self, pos: f64) {
         unsafe {
             cpp!([self as "SLSFramework*", pos as "double"] {
                 self->proceedOptimization(pos);
@@ -151,7 +156,7 @@ impl SLSFramework {
     /// Get positions along the current slider
     ///
     /// `pos` (`0 <= pos <= 1`) is the position along the slider
-    pub fn getParametersFromSlider(&self, pos: f64) -> Vec<f64> {
+    pub fn get_parameters_from_slider(&self, pos: f64) -> Vec<f64> {
         unsafe {
             let eigen_vec = cpp!(
                 [self as "SLSFramework*", pos as "double"]
@@ -169,7 +174,7 @@ impl SLSFramework {
     }
 
     /// Get the best position to date
-    pub fn getXmax(&self) -> Vec<f64> {
+    pub fn get_x_max(&self) -> Vec<f64> {
         unsafe {
             let eigen_vec = cpp!(
                 [self as "SLSFramework*"]
@@ -192,8 +197,8 @@ fn test_point() {
 
     let mut sls = SLSFramework::new(dims);
     for it in 0..10 {
-        let a = sls.getParametersFromSlider(0.);
-        let b = sls.getParametersFromSlider(1.);
+        let a = sls.get_parameters_from_slider(0.);
+        let b = sls.get_parameters_from_slider(1.);
         dbg!(&a);
         dbg!(&b);
 
@@ -208,9 +213,9 @@ fn test_point() {
         let x = x.max(0.).min(1.);
         dbg!(x);
 
-        sls.proceedOptimization(x);
+        sls.proceed_optimization(x);
     }
 
-    dbg!(sls.getXmax());
+    dbg!(sls.get_x_max());
 }
 
