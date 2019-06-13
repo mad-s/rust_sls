@@ -11,13 +11,15 @@ fn main() {
         config.include(path);
     }
 
-    // Builds the project in the directory located in `libfoo`, installing it
-    // into $OUT_DIR
-    let dst = cmake::build("sequential-line-search");
-    dbg!(&dst);
+    let dst = cmake::Config::new("sequential-line-search")
+        .define("SEQUENTIAL_LINE_SEARCH_BUILD_COMMAND_DEMOS", "OFF")
+        .build();
     //config.object(dst.join("lib/libSequentialLineSearch.a"));
 
-    println!("cargo:rustc-link-search=native={}", dst.join("lib").display());
+    println!(
+        "cargo:rustc-link-search=native={}",
+        dst.join("lib").display()
+    );
     println!("cargo:rustc-link-lib=static=SequentialLineSearch");
     println!("cargo:rustc-link-lib=dylib=nlopt");
 

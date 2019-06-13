@@ -12,6 +12,15 @@ categories = ["science"]
 
 edition = "2018"
 build = "build.rs"
+exclude = [
+  "sequential-line-search/Doxyfile",
+  "sequential-line-search/build/**/*",
+  "sequential-line-search/demos/**/*",
+  "sequential-line-search/**/docs/**/*",
+  "sequential-line-search/**/tests/**/*",
+  "sequential-line-search/**/*.JPG",
+  "sequential-line-search/**/*.pdf",
+]
 
 [dependencies]
 cpp = "0.4"
