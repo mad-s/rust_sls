@@ -23,10 +23,10 @@ exclude = [
 ]
 
 [dependencies]
-cpp = "0.4"
+cpp = "0.5.1"
 
 [build-dependencies]
-cpp_build = "0.4"
-pkg-config = "*"
-cmake = "*"
+cpp_build = "0.5.1"
+pkg-config = "0.3.14"
+cmake = "0.1.40"
 
